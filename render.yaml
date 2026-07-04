@@ -8,8 +8,9 @@ services:
     envVars:
       - key: APP_ENV
         value: production
-  - type: static
+  - type: web
     name: truemfd-calculators-web
+    runtime: static
     rootDir: apps/frontend
     buildCommand: pnpm install --frozen-lockfile=false && pnpm build
     staticPublishPath: dist
