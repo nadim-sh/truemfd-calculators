@@ -1,0 +1,17 @@
+{
+  "health": {
+    "status": "healthy",
+    "service": "calculators@TrueMFD"
+  },
+  "calculators": [],
+  "responsive": [],
+  "routes": [],
+  "devLogs": [],
+  "backendFallback": null,
+  "artifactsDir": "C:\\Users\\nadim\\OneDrive\\Documents\\Calculators@truemfd\\production-verification-artifacts",
+  "serverLogs": {
+    "backend": "INFO:     Started server process [235404]\r\nINFO:     Waiting for application startup.\r\nINFO:     Application startup complete.\r\nERROR:    [Errno 10048] error while attempting to bind on address ('127.0.0.1', 8030): [winerror 10048] only one usage of each socket address (protocol/network address/port) is normally permitted\r\nINFO:     Waiting for application shutdown.\r\nINFO:     Application shutdown complete.\r\n",
+    "frontend": "Port 4176 is in use, trying another one...\n  \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://127.0.0.1:\u001b[1m4177\u001b[22m/\u001b[39m\n"
+  },
+  "notes": []
+}

@@ -1,0 +1,599 @@
+{
+  "health": {
+    "status": "healthy",
+    "service": "calculators@TrueMFD"
+  },
+  "apiSmoke": [
+    {
+      "slug": "standard-sip",
+      "status": 200,
+      "ok": true,
+      "calculator": "standard-sip",
+      "hasResult": true,
+      "hasChart": true
+    },
+    {
+      "slug": "step-up-sip",
+      "status": 200,
+      "ok": true,
+      "calculator": "step-up-sip",
+      "hasResult": true,
+      "hasChart": true
+    },
+    {
+      "slug": "lumpsum",
+      "status": 200,
+      "ok": true,
+      "calculator": "lumpsum",
+      "hasResult": true,
+      "hasChart": true
+    },
+    {
+      "slug": "goal-sip",
+      "status": 200,
+      "ok": true,
+      "calculator": "goal-sip",
+      "hasResult": true,
+      "hasChart": true
+    },
+    {
+      "slug": "swp",
+      "status": 200,
+      "ok": true,
+      "calculator": "swp",
+      "hasResult": true,
+      "hasChart": true
+    },
+    {
+      "slug": "ppf",
+      "status": 200,
+      "ok": true,
+      "calculator": "ppf",
+      "hasResult": true,
+      "hasChart": true
+    },
+    {
+      "slug": "sip-vs-lumpsum",
+      "status": 200,
+      "ok": true,
+      "calculator": "sip-vs-lumpsum",
+      "hasResult": true,
+      "hasChart": true
+    },
+    {
+      "slug": "xirr",
+      "status": 200,
+      "ok": true,
+      "calculator": "xirr",
+      "hasResult": true,
+      "hasChart": true
+    },
+    {
+      "slug": "irr",
+      "status": 200,
+      "ok": true,
+      "calculator": "irr",
+      "hasResult": true,
+      "hasChart": true
+    }
+  ],
+  "calculators": [
+    {
+      "slug": "standard-sip",
+      "name": "Standard SIP",
+      "api": true,
+      "cards": 3,
+      "chart": true,
+      "copy": false,
+      "share": false,
+      "pdfClick": true,
+      "csvClick": true,
+      "reset": true,
+      "errorHandling": "n/a",
+      "directRoute": true,
+      "layoutOk": true,
+      "calculationText": "₹23,23,391"
+    },
+    {
+      "slug": "step-up-sip",
+      "name": "Step Up SIP",
+      "api": true,
+      "cards": 3,
+      "chart": true,
+      "copy": false,
+      "share": false,
+      "pdfClick": true,
+      "csvClick": true,
+      "reset": true,
+      "errorHandling": "n/a",
+      "directRoute": true,
+      "layoutOk": true,
+      "calculationText": "₹33,74,326"
+    },
+    {
+      "slug": "lumpsum",
+      "name": "Lumpsum",
+      "api": true,
+      "cards": 3,
+      "chart": true,
+      "copy": false,
+      "share": false,
+      "pdfClick": true,
+      "csvClick": true,
+      "reset": true,
+      "errorHandling": "n/a",
+      "directRoute": true,
+      "layoutOk": true,
+      "calculationText": "₹15,52,924"
+    },
+    {
+      "slug": "goal-sip",
+      "name": "Goal SIP",
+      "api": true,
+      "cards": 3,
+      "chart": true,
+      "copy": false,
+      "share": false,
+      "pdfClick": true,
+      "csvClick": true,
+      "reset": true,
+      "errorHandling": "n/a",
+      "directRoute": true,
+      "layoutOk": true,
+      "calculationText": "₹10,760"
+    },
+    {
+      "slug": "swp",
+      "name": "SWP",
+      "api": true,
+      "cards": 2,
+      "chart": true,
+      "copy": false,
+      "share": false,
+      "pdfClick": true,
+      "csvClick": true,
+      "reset": true,
+      "errorHandling": "n/a",
+      "directRoute": true,
+      "layoutOk": true,
+      "calculationText": "₹73,00,387"
+    },
+    {
+      "slug": "ppf",
+      "name": "PPF",
+      "api": true,
+      "cards": 3,
+      "chart": true,
+      "copy": false,
+      "share": false,
+      "pdfClick": true,
+      "csvClick": true,
+      "reset": true,
+      "errorHandling": "n/a",
+      "directRoute": true,
+      "layoutOk": true,
+      "calculationText": "₹62,62,992"
+    },
+    {
+      "slug": "sip-vs-lumpsum",
+      "name": "SIP vs Lumpsum",
+      "api": true,
+      "cards": 3,
+      "chart": true,
+      "copy": false,
+      "share": false,
+      "pdfClick": true,
+      "csvClick": true,
+      "reset": true,
+      "errorHandling": "n/a",
+      "directRoute": true,
+      "layoutOk": true,
+      "calculationText": "₹23,23,391"
+    },
+    {
+      "slug": "xirr",
+      "name": "XIRR",
+      "api": true,
+      "cards": 1,
+      "chart": true,
+      "copy": false,
+      "share": false,
+      "pdfClick": true,
+      "csvClick": true,
+      "reset": true,
+      "errorHandling": "passed",
+      "directRoute": true,
+      "layoutOk": true,
+      "calculationText": "230.84%"
+    },
+    {
+      "slug": "irr",
+      "name": "IRR",
+      "api": true,
+      "cards": 1,
+      "chart": true,
+      "copy": false,
+      "share": false,
+      "pdfClick": true,
+      "csvClick": true,
+      "reset": true,
+      "errorHandling": "passed",
+      "directRoute": true,
+      "layoutOk": true,
+      "calculationText": "10.48%"
+    }
+  ],
+  "responsive": [
+    {
+      "viewport": "desktop",
+      "slug": "standard-sip",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 1425,
+        "h1": true,
+        "scrollWidth": 1425
+      }
+    },
+    {
+      "viewport": "desktop",
+      "slug": "step-up-sip",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 1425,
+        "h1": true,
+        "scrollWidth": 1425
+      }
+    },
+    {
+      "viewport": "desktop",
+      "slug": "lumpsum",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 1425,
+        "h1": true,
+        "scrollWidth": 1425
+      }
+    },
+    {
+      "viewport": "desktop",
+      "slug": "goal-sip",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 1425,
+        "h1": true,
+        "scrollWidth": 1425
+      }
+    },
+    {
+      "viewport": "desktop",
+      "slug": "swp",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 1425,
+        "h1": true,
+        "scrollWidth": 1425
+      }
+    },
+    {
+      "viewport": "desktop",
+      "slug": "ppf",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 1425,
+        "h1": true,
+        "scrollWidth": 1425
+      }
+    },
+    {
+      "viewport": "desktop",
+      "slug": "sip-vs-lumpsum",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 1425,
+        "h1": true,
+        "scrollWidth": 1425
+      }
+    },
+    {
+      "viewport": "desktop",
+      "slug": "xirr",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 1425,
+        "h1": true,
+        "scrollWidth": 1425
+      }
+    },
+    {
+      "viewport": "desktop",
+      "slug": "irr",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 1425,
+        "h1": true,
+        "scrollWidth": 1425
+      }
+    },
+    {
+      "viewport": "tablet",
+      "slug": "standard-sip",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 753,
+        "h1": true,
+        "scrollWidth": 753
+      }
+    },
+    {
+      "viewport": "tablet",
+      "slug": "step-up-sip",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 753,
+        "h1": true,
+        "scrollWidth": 753
+      }
+    },
+    {
+      "viewport": "tablet",
+      "slug": "lumpsum",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 753,
+        "h1": true,
+        "scrollWidth": 753
+      }
+    },
+    {
+      "viewport": "tablet",
+      "slug": "goal-sip",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 753,
+        "h1": true,
+        "scrollWidth": 753
+      }
+    },
+    {
+      "viewport": "tablet",
+      "slug": "swp",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 753,
+        "h1": true,
+        "scrollWidth": 753
+      }
+    },
+    {
+      "viewport": "tablet",
+      "slug": "ppf",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 753,
+        "h1": true,
+        "scrollWidth": 753
+      }
+    },
+    {
+      "viewport": "tablet",
+      "slug": "sip-vs-lumpsum",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 753,
+        "h1": true,
+        "scrollWidth": 753
+      }
+    },
+    {
+      "viewport": "tablet",
+      "slug": "xirr",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 753,
+        "h1": true,
+        "scrollWidth": 753
+      }
+    },
+    {
+      "viewport": "tablet",
+      "slug": "irr",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 753,
+        "h1": true,
+        "scrollWidth": 753
+      }
+    },
+    {
+      "viewport": "mobile",
+      "slug": "standard-sip",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 375,
+        "h1": true,
+        "scrollWidth": 375
+      }
+    },
+    {
+      "viewport": "mobile",
+      "slug": "step-up-sip",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 375,
+        "h1": true,
+        "scrollWidth": 375
+      }
+    },
+    {
+      "viewport": "mobile",
+      "slug": "lumpsum",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 375,
+        "h1": true,
+        "scrollWidth": 375
+      }
+    },
+    {
+      "viewport": "mobile",
+      "slug": "goal-sip",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 375,
+        "h1": true,
+        "scrollWidth": 375
+      }
+    },
+    {
+      "viewport": "mobile",
+      "slug": "swp",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 375,
+        "h1": true,
+        "scrollWidth": 375
+      }
+    },
+    {
+      "viewport": "mobile",
+      "slug": "ppf",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 375,
+        "h1": true,
+        "scrollWidth": 375
+      }
+    },
+    {
+      "viewport": "mobile",
+      "slug": "sip-vs-lumpsum",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 375,
+        "h1": true,
+        "scrollWidth": 375
+      }
+    },
+    {
+      "viewport": "mobile",
+      "slug": "xirr",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 375,
+        "h1": true,
+        "scrollWidth": 375
+      }
+    },
+    {
+      "viewport": "mobile",
+      "slug": "irr",
+      "ok": true,
+      "metrics": {
+        "chart": true,
+        "clientWidth": 375,
+        "h1": true,
+        "scrollWidth": 375
+      }
+    }
+  ],
+  "routes": [
+    {
+      "route": "/",
+      "ok": true,
+      "state": {
+        "bodyLength": 1354,
+        "h1": "Premium financial calculators for thoughtful investors.",
+        "hasRoot": true,
+        "url": "http://localhost:5173/"
+      }
+    },
+    {
+      "route": "/calculators/standard-sip",
+      "ok": true,
+      "state": {
+        "bodyLength": 1314,
+        "h1": "Standard SIP",
+        "hasRoot": true,
+        "url": "http://localhost:5173/calculators/standard-sip"
+      }
+    },
+    {
+      "route": "/calculators/irr",
+      "ok": true,
+      "state": {
+        "bodyLength": 1177,
+        "h1": "IRR",
+        "hasRoot": true,
+        "url": "http://localhost:5173/calculators/irr"
+      }
+    },
+    {
+      "route": "/calculators/not-real",
+      "ok": true,
+      "state": {
+        "bodyLength": 202,
+        "h1": "",
+        "hasRoot": true,
+        "url": "http://localhost:5173/calculators/not-real"
+      }
+    }
+  ],
+  "devLogs": [],
+  "backendFallback": {
+    "cards": 3,
+    "instantEstimateVisible": false,
+    "messageVisible": false,
+    "statusText": "API result loaded successfully."
+  },
+  "renderReadiness": {},
+  "artifactsDir": "C:\\Users\\nadim\\OneDrive\\Documents\\Calculators@truemfd\\production-verification-artifacts",
+  "serverLogs": {
+    "backend": "INFO:     127.0.0.1:5558 - \"GET /api/v1/health HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:5558 - \"GET /api/v1/health HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:5563 - \"POST /api/v1/calculators/standard-sip HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:5558 - \"POST /api/v1/calculators/step-up-sip HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:5563 - \"POST /api/v1/calculators/lumpsum HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:5558 - \"POST /api/v1/calculators/goal-sip HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:5563 - \"POST /api/v1/calculators/swp HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:5558 - \"POST /api/v1/calculators/ppf HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:5563 - \"POST /api/v1/calculators/sip-vs-lumpsum HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:5558 - \"POST /api/v1/calculators/xirr HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:5563 - \"POST /api/v1/calculators/irr HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:14368 - \"POST /api/v1/calculators/standard-sip HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:4407 - \"OPTIONS /api/v1/calculators/step-up-sip HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:4407 - \"POST /api/v1/calculators/step-up-sip HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:6767 - \"OPTIONS /api/v1/calculators/lumpsum HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:6767 - \"POST /api/v1/calculators/lumpsum HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:9954 - \"OPTIONS /api/v1/calculators/goal-sip HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:9954 - \"POST /api/v1/calculators/goal-sip HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:13953 - \"OPTIONS /api/v1/calculators/swp HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:13953 - \"POST /api/v1/calculators/swp HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:4115 - \"OPTIONS /api/v1/calculators/ppf HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:4115 - \"POST /api/v1/calculators/ppf HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:13864 - \"OPTIONS /api/v1/calculators/sip-vs-lumpsum HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:13864 - \"POST /api/v1/calculators/sip-vs-lumpsum HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:3229 - \"OPTIONS /api/v1/calculators/xirr HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:3229 - \"POST /api/v1/calculators/xirr HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:3002 - \"OPTIONS /api/v1/calculators/irr HTTP/1.1\" 200 OK\r\nINFO:     127.0.0.1:3002 - \"POST /api/v1/calculators/irr HTTP/1.1\" 200 OK\r\nINFO:     Started server process [252760]\r\nINFO:     Waiting for application startup.\r\nINFO:     Application startup complete.\r\nINFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)\r\n",
+    "frontend": "  \u001b[32m➜\u001b[39m  \u001b[1mLocal\u001b[22m:   \u001b[36mhttp://localhost:\u001b[1m5173\u001b[22m/\u001b[39m\n"
+  },
+  "issues": [],
+  "clipboardProbe": {
+    "before": "",
+    "afterCopy": "",
+    "afterShare": "",
+    "copyChanged": false,
+    "shareChanged": false
+  },
+  "finalFixVerification": {
+    "copyUi": false,
+    "shareUi": true,
+    "notFoundOk": true,
+    "notFound": {
+      "body": "\n    calculators@TrueMFDPage not foundCalculator route not found.The calculator you opened is unavailable or the link is incomplete.Back to calculators\n  \n\n",
+      "h1": "Calculator route not found."
+    },
+    "logs": []
+  },
+  "devLogsAfterFallback": []
+}

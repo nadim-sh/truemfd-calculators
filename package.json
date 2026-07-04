@@ -1,0 +1,17 @@
+{
+  "name": "calculators-truemfd",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Production-ready TrueMFD calculator suite with React frontend and FastAPI backend.",
+  "scripts": {
+    "dev": "pnpm --parallel --filter @truemfd/frontend --filter @truemfd/backend dev",
+    "build": "pnpm --filter @truemfd/frontend build",
+    "test": "pnpm --filter @truemfd/frontend test && pnpm --filter @truemfd/backend test",
+    "lint": "pnpm --filter @truemfd/frontend lint",
+    "smoke:local": "node scripts/local-smoke.mjs"
+  },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  }
+}
