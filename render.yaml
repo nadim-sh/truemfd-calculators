@@ -2,6 +2,7 @@ services:
   - type: web
     name: truemfd-calculators-api
     runtime: python
+    plan: free
     rootDir: apps/backend
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
@@ -11,6 +12,7 @@ services:
   - type: web
     name: truemfd-calculators-web
     runtime: static
+    plan: free
     rootDir: apps/frontend
     buildCommand: pnpm install --frozen-lockfile=false && pnpm build
     staticPublishPath: dist
