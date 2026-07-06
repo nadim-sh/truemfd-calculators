@@ -4,7 +4,7 @@ export function BrandFooter() {
   return (
     <footer className="brand-footer">
       <div className="footer-brand">
-        <span className="brand-mark">T</span>
+        <img className="brand-logo footer-logo" src="/assets/truemfd-logo.png" alt="TrueMFD logo" />
         <div>
           <strong>TrueMFD</strong>
           <p>Nadim Sarfraz Husain</p>

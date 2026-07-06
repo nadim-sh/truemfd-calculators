@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 const links = [
   { label: "Home", href: "/" },
   { label: "Calculators", href: "/#calculators" },
-  { label: "About", href: "https://www.truemfd.com/" },
   { label: "Contact", href: "mailto:nadim@truemfd.com" }
 ];
 
@@ -12,7 +11,7 @@ export function BrandHeader() {
   return (
     <nav className="nav brand-header" aria-label="Primary">
       <Link to="/" className="brand-lockup" aria-label="TrueMFD calculators home">
-        <span className="brand-mark">T</span>
+        <img className="brand-logo" src="/assets/truemfd-logo.png" alt="TrueMFD logo" />
         <span>
           <strong>TrueMFD</strong>
           <small>AMFI Registered Mutual Fund Distributor</small>

@@ -19,35 +19,54 @@ export function App() {
 
   return (
     <main>
-      <section className="hero">
+      <section className="landing-top">
         <BrandHeader />
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="hero-identity">
-          <div className="hero-brand-lockup">
-            <span className="brand-mark hero-brand-mark">T</span>
-            <span>
-              <strong>TrueMFD</strong>
-              <small>AMFI Registered Mutual Fund Distributor</small>
-            </span>
+        <p className="calculator-tagline">Premium Financial Calculators for Thoughtful Investors</p>
+
+        <section className="section calculators-section" id="calculators">
+          <div className="section-heading">
+            <p className="eyebrow centered">OUR CALCULATORS</p>
+            <h2>Choose a Planning Tool</h2>
+            <span>Nine precision tools for every investment decision.</span>
           </div>
+          <div className="card-grid">
+            {calculators.map((calculator, index) => (
+              <Link className="calculator-card" style={{ animationDelay: `${index * 80}ms` }} to={`/calculators/${calculator.slug}`} key={calculator.slug}>
+                <span className="calculator-icon">{iconFor(calculator.slug)}</span>
+                <span>{calculator.category}</span>
+                <h3>{calculator.name}</h3>
+                <p>{calculator.summary}</p>
+                <b>Calculate -&gt;</b>
+              </Link>
+            ))}
+          </div>
+        </section>
+      </section>
+
+      <section className="hero hero-showcase">
+        <motion.div initial={{ opacity: 0, y: 12, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="hero-identity">
+          <img className="hero-logo" src="/assets/truemfd-logo.png" alt="TrueMFD logo" />
+          <strong>TrueMFD</strong>
+          <small>AMFI Registered Mutual Fund Distributor</small>
           <span className="identity-divider" aria-hidden />
           <p>Premium Financial Calculators for Thoughtful Investors</p>
         </motion.div>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="hero-grid">
-          <div>
-            <p className="eyebrow ornamental">CALCULATORS@TRUEMFD</p>
-            <h1>Premium Financial Calculators</h1>
-            <h2 className="hero-subtitle">for Thoughtful Investors</h2>
-            <p className="lede">Plan SIPs, withdrawals, PPF, goals, and cashflow returns with clear projections, schedules, and export-ready results.</p>
-            <div className="hero-actions">
-              <a className="button-link" href="#calculators">Explore Calculators</a>
-              <a className="button-link outline" href="https://www.truemfd.com/">Visit TrueMFD.com</a>
+            <div>
+              <p className="eyebrow ornamental">CALCULATORS@TRUEMFD</p>
+              <h1>Premium Financial Calculators</h1>
+              <h2 className="hero-subtitle">for Thoughtful Investors</h2>
+              <p className="lede">Plan SIPs, withdrawals, PPF, goals, and cashflow returns with clear projections, schedules, and export-ready results.</p>
+              <div className="hero-actions">
+                <a className="button-link" href="#calculators">Explore Calculators</a>
+                <a className="button-link outline" href="https://www.truemfd.com/">Visit TrueMFD.com</a>
+              </div>
             </div>
-          </div>
-          <div className="trust-panel" aria-label="Trust highlights">
-            <ShieldCheck aria-hidden />
-            <h2>Built for advisory confidence</h2>
-            <p>Reusable financial engine, transparent assumptions, responsive UI, and API-first architecture.</p>
-          </div>
+            <div className="trust-panel" aria-label="Trust highlights">
+              <ShieldCheck aria-hidden />
+              <h2>Built for advisory confidence</h2>
+              <p>Reusable financial engine, transparent assumptions, responsive UI, and API-first architecture.</p>
+            </div>
         </motion.div>
       </section>
 
@@ -64,24 +83,6 @@ export function App() {
             <span>{text}</span>
           </div>
         ))}
-      </section>
-
-      <section className="section" id="calculators">
-        <div className="section-heading">
-          <p className="eyebrow centered">OUR CALCULATORS</p>
-          <h2>Choose a Planning Tool</h2>
-        </div>
-        <div className="card-grid">
-          {calculators.map((calculator) => (
-            <Link className="calculator-card" to={`/calculators/${calculator.slug}`} key={calculator.slug}>
-              <span className="calculator-icon">{iconFor(calculator.slug)}</span>
-              <span>{calculator.category}</span>
-              <h3>{calculator.name}</h3>
-              <p>{calculator.summary}</p>
-              <b>Calculate -&gt;</b>
-            </Link>
-          ))}
-        </div>
       </section>
 
       <section className="section split" id="education">
