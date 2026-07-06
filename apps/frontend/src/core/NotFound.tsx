@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { BrandFooter } from "./BrandFooter";
+import { MobileNav } from "./MobileNav";
 
 export function NotFound() {
   return (
@@ -20,6 +21,7 @@ export function NotFound() {
         <Link className="button-link" to="/">Back to calculators</Link>
       </section>
       <BrandFooter />
+      <MobileNav />
     </main>
   );
 }

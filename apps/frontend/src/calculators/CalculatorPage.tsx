@@ -6,9 +6,12 @@ import { CalculatorDefinition, FieldName } from "./types";
 import { CASHFLOW_SIGN_MESSAGE, CalculatorResult, runCalculator } from "../engine/financialEngine";
 import { runCalculatorApi } from "../engine/apiClient";
 import { exportCsv, exportPdf, printPage, shareResult } from "../core/exports";
-import { formatChartValue, formatResultValue, formatSummary, summaryText } from "../core/resultFormatting";
+import { formatChartValue, formatResultValue, formatScheduleValue, formatSummary, summaryText } from "../core/resultFormatting";
 import { copyText } from "../core/clipboard";
 import { BrandFooter } from "../core/BrandFooter";
+import { MobileNav } from "../core/MobileNav";
+import { BrandHeader } from "../core/BrandHeader";
+import { applySeo } from "../core/Seo";
 
 type FormValues = Record<string, number | string>;
 
@@ -42,7 +45,7 @@ export function CalculatorPage({ calculator }: { calculator: CalculatorDefinitio
   const params = new URLSearchParams(window.location.search);
   const pageDefaults: FormValues = { ...defaults, ...(calculator.engine === "ppf" ? { years: 15 } : {}) };
   const hydrated = Object.fromEntries(calculator.fields.map((field) => [field, params.get(field) ?? pageDefaults[field]]));
-  const { register, handleSubmit, reset, watch, formState: { errors } } = useForm<FormValues>({ defaultValues: hydrated, mode: "onBlur" });
+  const { register, reset, watch, setValue, formState: { errors } } = useForm<FormValues>({ defaultValues: hydrated, mode: "onChange" });
   const [loading, setLoading] = useState(false);
   const [apiResult, setApiResult] = useState<CalculatorResult | null>(null);
   const [source, setSource] = useState<"local" | "api">("local");
@@ -54,31 +57,57 @@ export function CalculatorPage({ calculator }: { calculator: CalculatorDefinitio
   const watchedSnapshot = JSON.stringify(watched);
 
   useEffect(() => {
+    applySeo({
+      title: `${calculator.name} | calculators@TrueMFD`,
+      description: calculator.summary,
+      canonical: `https://truemfd-calculators-web.onrender.com/calculators/${calculator.slug}`
+    });
+  }, [calculator.name, calculator.slug, calculator.summary]);
+
+  useEffect(() => {
     if (apiResult && watchedSnapshot !== submittedSnapshot) {
       setApiResult(null);
       setSource("local");
-      setMessage("Inputs changed. Instant estimate shown until you calculate again.");
+      setMessage("Inputs changed. Verifying updated estimate with the API.");
     }
   }, [apiResult, submittedSnapshot, watchedSnapshot]);
 
-  async function submit(values: FormValues) {
-    setLoading(true);
+  useEffect(() => {
+    if (localResult.error) {
+      setApiResult(null);
+      setSource("local");
+      return;
+    }
+
+    const values = watched;
     const next = new URLSearchParams();
     calculator.fields.forEach((field) => next.set(field, String(values[field])));
     window.history.replaceState(null, "", `?${next.toString()}`);
-    try {
-      setApiResult(await runCalculatorApi(calculator.engine, values));
-      setSource("api");
-      setSubmittedSnapshot(JSON.stringify(values));
-      setMessage("API result loaded successfully.");
-    } catch (error) {
-      setApiResult(null);
-      setSource("local");
-      setMessage(`${error instanceof Error ? error.message : "API request failed"}. Showing instant estimate instead.`);
-    } finally {
+
+    const loadingTimer = window.setTimeout(() => setLoading(true), 500);
+    const requestTimer = window.setTimeout(async () => {
+      try {
+        const verified = await runCalculatorApi(calculator.engine, values);
+        setApiResult(verified);
+        setSource("api");
+        setSubmittedSnapshot(JSON.stringify(values));
+        setMessage("API result loaded successfully.");
+      } catch (error) {
+        setApiResult(null);
+        setSource("local");
+        setMessage(`${error instanceof Error ? error.message : "API request failed"}. Showing instant estimate instead.`);
+      } finally {
+        window.clearTimeout(loadingTimer);
+        setLoading(false);
+      }
+    }, 300);
+
+    return () => {
+      window.clearTimeout(loadingTimer);
+      window.clearTimeout(requestTimer);
       setLoading(false);
-    }
-  }
+    };
+  }, [calculator.engine, calculator.fields, localResult.error, watchedSnapshot]);
 
   async function copyResult() {
     setMessage((await copyText(summaryText(calculator.name, result.summary))) ? "Result copied." : "Copy failed. Select and copy the result manually.");
@@ -87,20 +116,15 @@ export function CalculatorPage({ calculator }: { calculator: CalculatorDefinitio
   return (
     <main>
       <section className="page-hero">
-        <a href="/" className="brand-lockup back-link" aria-label="TrueMFD calculators home">
-          <span className="brand-mark">T</span>
-          <span>
-            <strong>TrueMFD</strong>
-            <small>calculators</small>
-          </span>
-        </a>
+        <BrandHeader />
+        <p className="breadcrumb">Home &gt; Calculators &gt; {calculator.name}</p>
         <p className="eyebrow">{calculator.category}</p>
         <h1>{calculator.name}</h1>
         <p>{calculator.summary}</p>
       </section>
 
       <section className="workspace">
-        <form className="panel form-panel" onSubmit={handleSubmit(submit)}>
+        <form className="panel form-panel">
           {calculator.fields.map((field) => field === "cashflows" ? (
             <label key={field}>
               <span>{fieldLabels[field]}</span>
@@ -108,14 +132,16 @@ export function CalculatorPage({ calculator }: { calculator: CalculatorDefinitio
               {errors[field]?.message && <small className="field-error">{String(errors[field]?.message)}</small>}
             </label>
           ) : (
-            <label key={field}>
+            <label key={field} className="range-field">
               <span>{fieldLabels[field]}</span>
-              <input type="number" min={field === "years" && calculator.engine === "ppf" ? 15 : 0} step={field === "years" ? 1 : 0.01} {...register(field, fieldRules(field, calculator.engine))} aria-invalid={Boolean(errors[field])} />
+              <strong>{formatInputValue(field, Number(watched[field] ?? pageDefaults[field] ?? 0))}</strong>
+              <input type="number" min={fieldRange(field, calculator.engine).min} max={fieldRange(field, calculator.engine).max} step={field === "years" ? 1 : 0.01} {...register(field, fieldRules(field, calculator.engine))} aria-invalid={Boolean(errors[field])} />
+              <input type="range" min={fieldRange(field, calculator.engine).min} max={fieldRange(field, calculator.engine).max} step={field === "years" ? 1 : 0.01} value={Number(watched[field] ?? pageDefaults[field] ?? 0)} onChange={(event) => setValue(field, Number(event.target.value), { shouldValidate: true, shouldDirty: true })} />
               {errors[field]?.message && <small className="field-error">{String(errors[field]?.message)}</small>}
             </label>
           ))}
           <div className="toolbar">
-            <button type="submit" disabled={loading}>{loading ? "Calculating..." : "Calculate"}</button>
+            <span className={`auto-calc-note ${loading ? "is-loading" : ""}`}>{loading ? "Verifying..." : "Auto-calculates as you edit."}</span>
             <button type="button" className="icon-button" aria-label="Reset" onClick={() => { reset(pageDefaults); setApiResult(null); setSource("local"); setMessage("Inputs reset. Instant estimate shown."); }}><RotateCcw /></button>
           </div>
         </form>
@@ -129,7 +155,7 @@ export function CalculatorPage({ calculator }: { calculator: CalculatorDefinitio
             {Object.entries(result.summary).map(([label, value]) => (
               <div key={label}>
                 <span>{label}</span>
-                <strong>{formatResultValue(label, value)}</strong>
+                <CountedResult label={label} value={value} />
               </div>
             ))}
           </div>
@@ -144,6 +170,30 @@ export function CalculatorPage({ calculator }: { calculator: CalculatorDefinitio
               </AreaChart>
             </ResponsiveContainer>
           </div>
+          {result.schedule.length > 0 && (
+            <div className="schedule-preview" aria-label="Year-wise schedule preview">
+              <div className="schedule-heading">
+                <h2>Year-wise schedule</h2>
+                <span>Preview of export data</span>
+              </div>
+              <div className="schedule-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      {Object.keys(result.schedule[0]).map((label) => <th key={label}>{label}</th>)}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {result.schedule.slice(0, 8).map((row, index) => (
+                      <tr key={index}>
+                        {Object.entries(row).map(([label, value]) => <td key={label}>{formatScheduleValue(label, value)}</td>)}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
           <div className="toolbar">
             <button type="button" className="icon-button" aria-label="Copy result" onClick={copyResult}><Copy /></button>
             <button type="button" className="icon-button" aria-label="Export Excel CSV" onClick={() => exportCsv(calculator.slug, result.schedule)}><Download /></button>
@@ -163,8 +213,55 @@ export function CalculatorPage({ calculator }: { calculator: CalculatorDefinitio
         ))}
       </section>
       <BrandFooter />
+      <MobileNav />
     </main>
   );
+}
+
+function CountedResult({ label, value }: { label: string; value: number | string }) {
+  const [display, setDisplay] = useState(value);
+
+  useEffect(() => {
+    if (typeof value !== "number") {
+      setDisplay(value);
+      return;
+    }
+    let frame = 0;
+    const start = performance.now();
+    const duration = 800;
+    const from = 0;
+    const tick = (time: number) => {
+      const progress = Math.min(1, (time - start) / duration);
+      const eased = 1 - (1 - progress) ** 3;
+      setDisplay(from + (value - from) * eased);
+      if (progress < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [value]);
+
+  return <strong>{formatResultValue(label, display)}</strong>;
+}
+
+function formatInputValue(field: FieldName, value: number) {
+  if (field === "annualReturn" || field === "annualIncrease") return `${value.toLocaleString("en-IN", { maximumFractionDigits: 2 })}%`;
+  if (field === "years") return `${value.toLocaleString("en-IN")} years`;
+  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
+}
+
+function fieldRange(field: FieldName, engine: CalculatorDefinition["engine"]) {
+  const ranges: Partial<Record<FieldName, { min: number; max: number }>> = {
+    monthlyInvestment: { min: 1000, max: 100000 },
+    annualReturn: { min: 1, max: engine === "ppf" ? 20 : 30 },
+    years: { min: engine === "ppf" ? 15 : 1, max: engine === "ppf" ? 50 : 40 },
+    annualIncrease: { min: 0, max: 30 },
+    principal: { min: 10000, max: 10000000 },
+    goalAmount: { min: 100000, max: 50000000 },
+    corpus: { min: 100000, max: 50000000 },
+    monthlyWithdrawal: { min: 1000, max: 500000 },
+    yearlyInvestment: { min: 500, max: 150000 }
+  };
+  return ranges[field] ?? { min: 0, max: 100 };
 }
 
 function fieldRules(field: FieldName, engine: CalculatorDefinition["engine"]) {

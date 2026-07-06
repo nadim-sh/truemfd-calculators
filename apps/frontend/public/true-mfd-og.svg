@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">calculators@TrueMFD</title>
+  <desc id="desc">Premium financial calculators for thoughtful investors by TrueMFD.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#2E221B"/>
+      <stop offset="1" stop-color="#4B3425"/>
+    </linearGradient>
+    <radialGradient id="gold" cx="32%" cy="28%" r="72%">
+      <stop offset="0" stop-color="#C9A96E"/>
+      <stop offset="1" stop-color="#8F6F32"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="600" cy="315" r="245" fill="none" stroke="#B08D57" stroke-opacity="0.18" stroke-width="2"/>
+  <circle cx="600" cy="315" r="92" fill="#130D08" stroke="url(#gold)" stroke-width="8"/>
+  <circle cx="600" cy="315" r="74" fill="none" stroke="#B08D57" stroke-opacity="0.34" stroke-width="2"/>
+  <text x="600" y="345" text-anchor="middle" font-family="Georgia, serif" font-size="96" font-weight="700" fill="#C9A96E">T</text>
+  <text x="600" y="160" text-anchor="middle" font-family="Georgia, serif" font-size="72" font-weight="700" fill="#F4EFE8">TrueMFD</text>
+  <text x="600" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="4" fill="#B08D57">CALCULATORS@TRUEMFD</text>
+  <text x="600" y="492" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#DDD1C2">Premium Financial Calculators for Thoughtful Investors</text>
+  <text x="600" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#A59A8A">AMFI Registered Mutual Fund Distributor | ARN-2213 | EUIN-E073190</text>
+</svg>

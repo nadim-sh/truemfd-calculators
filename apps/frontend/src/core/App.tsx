@@ -1,31 +1,35 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { Calculator, CircleDollarSign, Coins, Goal, Grid3X3, Landmark, Search, ShieldCheck, Target, TrendingUp, WalletCards } from "lucide-react";
+import { BadgeCheck, Calculator, CircleDollarSign, Coins, Goal, Grid3X3, Handshake, Landmark, ShieldCheck, Target, TrendingUp, WalletCards } from "lucide-react";
 import { calculators } from "../calculators/definitions";
 import { BrandFooter } from "./BrandFooter";
+import { MobileNav } from "./MobileNav";
+import { BrandHeader } from "./BrandHeader";
+import { applySeo } from "./Seo";
 
 export function App() {
+  useEffect(() => {
+    applySeo({
+      title: "Premium Financial Calculators | calculators@TrueMFD",
+      description: "Plan SIPs, withdrawals, PPF, goals, and cashflow returns with premium TrueMFD financial calculators.",
+      canonical: "https://truemfd-calculators-web.onrender.com/"
+    });
+  }, []);
+
   return (
     <main>
       <section className="hero">
-        <nav className="nav" aria-label="Primary">
-          <Link to="/" className="brand-lockup" aria-label="TrueMFD calculators home">
-            <span className="brand-mark">T</span>
-            <span>
-              <strong>TrueMFD</strong>
-              <small>AMFI registered mutual fund distributor</small>
-            </span>
-          </Link>
-          <a href="#contact">Contact</a>
-        </nav>
+        <BrandHeader />
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="hero-grid">
           <div>
-            <p className="eyebrow">calculators@TrueMFD</p>
-            <h1>Premium financial calculators for thoughtful investors.</h1>
+            <p className="eyebrow ornamental">CALCULATORS@TRUEMFD</p>
+            <h1>Premium Financial Calculators</h1>
+            <h2 className="hero-subtitle">for Thoughtful Investors</h2>
             <p className="lede">Plan SIPs, withdrawals, PPF, goals, and cashflow returns with clear projections, schedules, and export-ready results.</p>
-            <div className="search-box">
-              <Search aria-hidden />
-              <input aria-label="Quick search calculators" placeholder="Search SIP, SWP, PPF, XIRR..." />
+            <div className="hero-actions">
+              <a className="button-link" href="#calculators">Explore Calculators</a>
+              <a className="button-link outline" href="https://www.truemfd.com/">Visit TrueMFD.com</a>
             </div>
           </div>
           <div className="trust-panel" aria-label="Trust highlights">
@@ -37,17 +41,23 @@ export function App() {
       </section>
 
       <section className="brand-principles" aria-label="TrueMFD principles">
-        {["Trust", "Focus", "Integrity", "Relationships"].map((item) => (
+        {[
+          { item: "Trust", text: "Honest advice.", icon: ShieldCheck },
+          { item: "Focus", text: "Goal based investing.", icon: Target },
+          { item: "Integrity", text: "Always putting interests first.", icon: BadgeCheck },
+          { item: "Relationships", text: "Long-term guidance.", icon: Handshake }
+        ].map(({ item, text, icon: Icon }) => (
           <div key={item}>
+            <Icon aria-hidden />
             <strong>{item}</strong>
-            <span>{item === "Trust" ? "Honest advice." : item === "Focus" ? "Goal based investing." : item === "Integrity" ? "Always putting interests first." : "Long-term guidance."}</span>
+            <span>{text}</span>
           </div>
         ))}
       </section>
 
-      <section className="section">
+      <section className="section" id="calculators">
         <div className="section-heading">
-          <p className="eyebrow">Featured calculators</p>
+          <p className="eyebrow centered">FEATURED CALCULATORS</p>
           <h2>Choose a planning tool</h2>
         </div>
         <div className="card-grid">
@@ -57,15 +67,17 @@ export function App() {
               <span>{calculator.category}</span>
               <h3>{calculator.name}</h3>
               <p>{calculator.summary}</p>
+              <b>Calculate -&gt;</b>
             </Link>
           ))}
         </div>
       </section>
 
-      <section className="section split" id="contact">
+      <section className="section split" id="education">
         <div>
           <p className="eyebrow">Investor education</p>
           <h2>Clear assumptions, no black boxes.</h2>
+          <p>Every formula is transparent. Every result is explainable.</p>
         </div>
         <div className="faq-list">
           <details open>
@@ -79,6 +91,7 @@ export function App() {
         </div>
       </section>
       <BrandFooter />
+      <MobileNav />
     </main>
   );
 }

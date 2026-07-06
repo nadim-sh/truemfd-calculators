@@ -14,6 +14,7 @@ app.add_middleware(
     allow_origins=[
         "https://www.truemfd.com",
         "https://truemfd.com",
+        "https://calculators.truemfd.com",
         "https://truemfd-calculators-web.onrender.com",
         "http://localhost:5173",
     ],
