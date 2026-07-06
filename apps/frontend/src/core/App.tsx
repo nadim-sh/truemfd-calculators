@@ -21,6 +21,17 @@ export function App() {
     <main>
       <section className="hero">
         <BrandHeader />
+        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="hero-identity">
+          <div className="hero-brand-lockup">
+            <span className="brand-mark hero-brand-mark">T</span>
+            <span>
+              <strong>TrueMFD</strong>
+              <small>AMFI Registered Mutual Fund Distributor</small>
+            </span>
+          </div>
+          <span className="identity-divider" aria-hidden />
+          <p>Premium Financial Calculators for Thoughtful Investors</p>
+        </motion.div>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="hero-grid">
           <div>
             <p className="eyebrow ornamental">CALCULATORS@TRUEMFD</p>
@@ -57,8 +68,8 @@ export function App() {
 
       <section className="section" id="calculators">
         <div className="section-heading">
-          <p className="eyebrow centered">FEATURED CALCULATORS</p>
-          <h2>Choose a planning tool</h2>
+          <p className="eyebrow centered">OUR CALCULATORS</p>
+          <h2>Choose a Planning Tool</h2>
         </div>
         <div className="card-grid">
           {calculators.map((calculator) => (

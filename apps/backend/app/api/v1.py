@@ -38,7 +38,14 @@ def standard_sip_endpoint(payload: SipRequest):
 
 @router.post("/calculators/step-up-sip")
 def step_up_sip_endpoint(payload: StepUpSipRequest):
-    return step_up_sip(payload.monthly_investment, payload.annual_return, payload.years, payload.annual_increase)
+    return step_up_sip(
+        payload.monthly_investment,
+        payload.annual_return,
+        payload.years,
+        payload.annual_increase,
+        payload.step_up_type,
+        payload.annual_step_up_amount,
+    )
 
 
 @router.post("/calculators/lumpsum")

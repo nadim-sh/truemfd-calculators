@@ -21,6 +21,12 @@ def test_standard_sip_api():
     assert response.json()["calculator"] == "standard-sip"
 
 
+def test_root_health_api():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.json()["status"] == "healthy"
+
+
 def test_all_calculator_endpoints_return_results():
     cases = [
         ("step-up-sip", {"monthly_investment": 10000, "annual_return": 12, "years": 10, "annual_increase": 10}),
@@ -40,6 +46,25 @@ def test_all_calculator_endpoints_return_results():
         assert body["calculator"] == slug
         assert "result" in body
         assert "chart" in body
+
+
+def test_step_up_sip_api_accepts_fixed_amount_mode():
+    response = client.post(
+        "/api/v1/calculators/step-up-sip",
+        json={
+            "monthly_investment": 10000,
+            "annual_return": 12,
+            "years": 3,
+            "annual_increase": 0,
+            "step_up_type": "fixed_amount",
+            "annual_step_up_amount": 1000,
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["result"]["final_monthly_sip"] == 12000
+    assert body["schedule"][1]["monthly_sip"] == 11000
 
 
 def test_ppf_rejects_invalid_short_term():

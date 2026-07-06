@@ -30,18 +30,51 @@ def standard_sip(monthly: float, annual_return: float, years: int) -> dict:
     return response("standard-sip", {"future_value": future_value, "total_investment": invested, "gain": future_value - invested}, schedule)
 
 
-def step_up_sip(monthly: float, annual_return: float, years: int, annual_increase: float) -> dict:
+def step_up_sip(
+    monthly: float,
+    annual_return: float,
+    years: int,
+    annual_increase: float,
+    step_up_type: str = "percentage",
+    annual_step_up_amount: float = 0,
+) -> dict:
     monthly_rate = annual_return / 1200
     value = 0.0
     invested = 0.0
     schedule = []
+    flat = standard_sip(monthly, annual_return, years)["result"]["future_value"]
     for year in range(1, years + 1):
-        contribution = monthly * (1 + annual_increase / 100) ** (year - 1)
+        contribution = (
+            monthly + annual_step_up_amount * (year - 1)
+            if step_up_type == "fixed_amount"
+            else monthly * (1 + annual_increase / 100) ** (year - 1)
+        )
+        year_investment = contribution * 12
         for _ in range(12):
             value = (value + contribution) * (1 + monthly_rate)
             invested += contribution
-        schedule.append({"period": year, "invested": invested, "value": value})
-    return response("step-up-sip", {"future_value": value, "total_investment": invested, "gain": value - invested}, schedule)
+        schedule.append(
+            {
+                "period": year,
+                "monthly_sip": contribution,
+                "annual_investment": year_investment,
+                "cumulative_invested": invested,
+                "invested": invested,
+                "value": value,
+                "gain": value - invested,
+            }
+        )
+    return response(
+        "step-up-sip",
+        {
+            "total_investment": invested,
+            "future_value": value,
+            "gain": value - invested,
+            "final_monthly_sip": contribution if years else monthly,
+            "extra_gain_vs_flat_sip": value - flat,
+        },
+        schedule,
+    )
 
 
 def lumpsum(principal: float, annual_return: float, years: int) -> dict:

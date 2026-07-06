@@ -19,7 +19,7 @@ export function runCalculator(engine: EngineName, input: Input): CalculatorResul
   const v = (key: string) => Number(input[key] || 0);
   switch (engine) {
     case "standardSip": return standardSip(v("monthlyInvestment"), v("annualReturn"), v("years"));
-    case "stepUpSip": return stepUpSip(v("monthlyInvestment"), v("annualReturn"), v("years"), v("annualIncrease"));
+    case "stepUpSip": return stepUpSip(v("monthlyInvestment"), v("annualReturn"), v("years"), v("annualIncrease"), String(input.stepUpType ?? "percentage"), v("annualStepUpAmount"));
     case "lumpsum": return lumpsum(v("principal"), v("annualReturn"), v("years"));
     case "goalSip": return goalSip(v("goalAmount"), v("annualReturn"), v("years"));
     case "swp": return swp(v("corpus"), v("monthlyWithdrawal"), v("annualReturn"), v("years"));
@@ -41,20 +41,44 @@ function standardSip(monthly: number, annualReturn: number, years: number): Calc
   }, { "Future value": futureValue, "Total investment": invested, "Estimated gain": futureValue - invested }, futureValue);
 }
 
-function stepUpSip(monthly: number, annualReturn: number, years: number, annualIncrease: number): CalculatorResult {
+function stepUpSip(monthly: number, annualReturn: number, years: number, annualIncrease: number, stepUpType = "percentage", annualStepUpAmount = 0): CalculatorResult {
   const monthlyRate = annualReturn / 1200;
   let value = 0;
   let invested = 0;
   const schedule: Row[] = [];
+  const flat = standardSip(monthly, annualReturn, years).futureValue ?? 0;
+  let contribution = monthly;
   for (let year = 1; year <= years; year += 1) {
-    const contribution = monthly * (1 + annualIncrease / 100) ** (year - 1);
+    contribution = stepUpType === "fixed_amount"
+      ? monthly + annualStepUpAmount * (year - 1)
+      : monthly * (1 + annualIncrease / 100) ** (year - 1);
+    const annualInvestment = contribution * 12;
     for (let month = 1; month <= 12; month += 1) {
       value = (value + contribution) * (1 + monthlyRate);
       invested += contribution;
     }
-    schedule.push({ period: year, invested, value });
+    schedule.push({
+      Year: year,
+      "Monthly SIP": contribution,
+      "Annual investment": annualInvestment,
+      "Cumulative invested": invested,
+      "Portfolio value": value,
+      Gain: value - invested
+    });
   }
-  return pack(schedule, { "Future value": value, "Total investment": invested, "Estimated gain": value - invested }, value);
+  const summary = {
+    "Total investment": invested,
+    "Future value": value,
+    "Estimated gain": value - invested,
+    "Final monthly SIP": contribution,
+    "Extra gain vs Flat SIP": value - flat
+  };
+  return {
+    summary,
+    schedule,
+    chart: schedule.map((row) => ({ label: String(row.Year), value: Number(row["Portfolio value"]) || 0 })),
+    futureValue: value
+  };
 }
 
 function lumpsum(principal: number, annualReturn: number, years: number): CalculatorResult {

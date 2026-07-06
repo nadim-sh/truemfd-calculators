@@ -9,6 +9,7 @@ from app.financial_engine.engine import (
     irr,
     ppf,
     standard_sip,
+    step_up_sip,
     swp,
     xirr,
 )
@@ -23,6 +24,16 @@ def test_standard_sip_generates_schedule():
 def test_goal_sip_required_amount_is_positive():
     result = goal_sip(2_500_000, 12, 10)
     assert result["result"]["monthly_sip_required"] > 0
+
+
+def test_step_up_sip_supports_fixed_amount_mode():
+    result = step_up_sip(10000, 12, 3, 0, "fixed_amount", 1000)
+
+    assert result["result"]["final_monthly_sip"] == 12000
+    assert result["result"]["total_investment"] == 396000
+    assert result["result"]["extra_gain_vs_flat_sip"] > 0
+    assert result["schedule"][1]["monthly_sip"] == 11000
+    assert result["schedule"][2]["annual_investment"] == 144000
 
 
 def test_ppf_uses_yearly_compounding_schedule():

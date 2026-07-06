@@ -15,7 +15,7 @@ import { applySeo } from "../core/Seo";
 
 type FormValues = Record<string, number | string>;
 
-const fieldLabels: Record<FieldName, string> = {
+const fieldLabels: Record<string, string> = {
   monthlyInvestment: "Monthly investment",
   annualReturn: "Expected annual return %",
   years: "Years",
@@ -33,6 +33,8 @@ const defaults: FormValues = {
   annualReturn: 12,
   years: 10,
   annualIncrease: 10,
+  annualStepUpAmount: 1000,
+  stepUpType: "percentage",
   principal: 500000,
   goalAmount: 2500000,
   corpus: 5000000,
@@ -44,7 +46,13 @@ const defaults: FormValues = {
 export function CalculatorPage({ calculator }: { calculator: CalculatorDefinition }) {
   const params = new URLSearchParams(window.location.search);
   const pageDefaults: FormValues = { ...defaults, ...(calculator.engine === "ppf" ? { years: 15 } : {}) };
-  const hydrated = Object.fromEntries(calculator.fields.map((field) => [field, params.get(field) ?? pageDefaults[field]]));
+  const hydrated = {
+    ...Object.fromEntries(calculator.fields.map((field) => [field, params.get(field) ?? pageDefaults[field]])),
+    ...(calculator.engine === "stepUpSip" ? {
+      stepUpType: params.get("stepUpType") ?? pageDefaults.stepUpType,
+      annualStepUpAmount: params.get("annualStepUpAmount") ?? pageDefaults.annualStepUpAmount
+    } : {})
+  };
   const { register, reset, watch, setValue, formState: { errors } } = useForm<FormValues>({ defaultValues: hydrated, mode: "onChange" });
   const [loading, setLoading] = useState(false);
   const [apiResult, setApiResult] = useState<CalculatorResult | null>(null);
@@ -52,6 +60,7 @@ export function CalculatorPage({ calculator }: { calculator: CalculatorDefinitio
   const [message, setMessage] = useState("Instant estimate shown. Calculate to verify with the API.");
   const [submittedSnapshot, setSubmittedSnapshot] = useState("");
   const watched = watch();
+  const stepUpType = String(watched.stepUpType ?? "percentage");
   const localResult = useMemo(() => runCalculator(calculator.engine, watched), [calculator.engine, watched]);
   const result = apiResult ?? localResult;
   const watchedSnapshot = JSON.stringify(watched);
@@ -82,6 +91,10 @@ export function CalculatorPage({ calculator }: { calculator: CalculatorDefinitio
     const values = watched;
     const next = new URLSearchParams();
     calculator.fields.forEach((field) => next.set(field, String(values[field])));
+    if (calculator.engine === "stepUpSip") {
+      next.set("stepUpType", String(values.stepUpType ?? "percentage"));
+      next.set("annualStepUpAmount", String(values.annualStepUpAmount ?? pageDefaults.annualStepUpAmount));
+    }
     window.history.replaceState(null, "", `?${next.toString()}`);
 
     const loadingTimer = window.setTimeout(() => setLoading(true), 500);
@@ -131,6 +144,32 @@ export function CalculatorPage({ calculator }: { calculator: CalculatorDefinitio
               <textarea {...register(field, fieldRules(field, calculator.engine))} aria-invalid={Boolean(errors[field])} />
               {errors[field]?.message && <small className="field-error">{String(errors[field]?.message)}</small>}
             </label>
+          ) : calculator.engine === "stepUpSip" && field === "annualIncrease" ? (
+            <div key={field} className="step-up-control">
+              <div className="segmented-control" role="radiogroup" aria-label="Step-up mode">
+                <button type="button" className={stepUpType === "percentage" ? "active" : ""} onClick={() => setValue("stepUpType", "percentage", { shouldDirty: true })}>% Percentage</button>
+                <button type="button" className={stepUpType === "fixed_amount" ? "active" : ""} onClick={() => setValue("stepUpType", "fixed_amount", { shouldDirty: true })}>Rs Fixed Amount</button>
+              </div>
+              {stepUpType === "fixed_amount" ? (
+                <label className="range-field">
+                  <span>Annual Increase (Rs)</span>
+                  <strong>{formatCurrency(Number(watched.annualStepUpAmount ?? pageDefaults.annualStepUpAmount ?? 0))}</strong>
+                  <input type="number" min={0} max={100000} step={500} {...register("annualStepUpAmount", stepUpRules("fixed_amount"))} aria-invalid={Boolean(errors.annualStepUpAmount)} />
+                  <input type="range" min={0} max={100000} step={500} value={Number(watched.annualStepUpAmount ?? pageDefaults.annualStepUpAmount ?? 0)} onChange={(event) => setValue("annualStepUpAmount", Number(event.target.value), { shouldValidate: true, shouldDirty: true })} />
+                  <small className="field-hint">Your SIP increases by {formatCurrency(Number(watched.annualStepUpAmount ?? 0))} every year.</small>
+                  {errors.annualStepUpAmount?.message && <small className="field-error">{String(errors.annualStepUpAmount?.message)}</small>}
+                </label>
+              ) : (
+                <label className="range-field">
+                  <span>Annual Step-Up (%)</span>
+                  <strong>{formatInputValue(field, Number(watched[field] ?? pageDefaults[field] ?? 0))}</strong>
+                  <input type="number" min={0} max={30} step={0.01} {...register(field, fieldRules(field, calculator.engine))} aria-invalid={Boolean(errors[field])} />
+                  <input type="range" min={0} max={30} step={0.01} value={Number(watched[field] ?? pageDefaults[field] ?? 0)} onChange={(event) => setValue(field, Number(event.target.value), { shouldValidate: true, shouldDirty: true })} />
+                  <small className="field-hint">Your SIP grows by {Number(watched[field] ?? 0).toLocaleString("en-IN", { maximumFractionDigits: 2 })}% every year.</small>
+                  {errors[field]?.message && <small className="field-error">{String(errors[field]?.message)}</small>}
+                </label>
+              )}
+            </div>
           ) : (
             <label key={field} className="range-field">
               <span>{fieldLabels[field]}</span>
@@ -243,10 +282,14 @@ function CountedResult({ label, value }: { label: string; value: number | string
   return <strong>{formatResultValue(label, display)}</strong>;
 }
 
+function formatCurrency(value: number) {
+  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
+}
+
 function formatInputValue(field: FieldName, value: number) {
   if (field === "annualReturn" || field === "annualIncrease") return `${value.toLocaleString("en-IN", { maximumFractionDigits: 2 })}%`;
   if (field === "years") return `${value.toLocaleString("en-IN")} years`;
-  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
+  return formatCurrency(value);
 }
 
 function fieldRange(field: FieldName, engine: CalculatorDefinition["engine"]) {
@@ -290,5 +333,15 @@ function fieldRules(field: FieldName, engine: CalculatorDefinition["engine"]) {
       if (field === "years" && !Number.isInteger(numericValue)) return "Enter whole years only.";
       return true;
     }
+  };
+}
+
+function stepUpRules(type: "percentage" | "fixed_amount") {
+  return {
+    required: type === "fixed_amount" ? "Annual increase is required." : "Annual step-up is required.",
+    valueAsNumber: true,
+    min: { value: 0, message: "Enter zero or more." },
+    max: { value: type === "fixed_amount" ? 100000 : 30, message: type === "fixed_amount" ? "Enter Rs 1,00,000 or less." : "Enter 30 or less." },
+    validate: (value: string | number) => Number.isFinite(Number(value)) || "Enter a valid number."
   };
 }

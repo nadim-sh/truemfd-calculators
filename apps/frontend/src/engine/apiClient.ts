@@ -25,6 +25,8 @@ const endpoints: Record<EngineName, string> = {
 
 const summaryLabels: Record<string, string> = {
   corpus_remaining: "Corpus remaining",
+  extra_gain_vs_flat_sip: "Extra gain vs Flat SIP",
+  final_monthly_sip: "Final monthly SIP",
   future_value: "Future value",
   gain: "Estimated gain",
   goal_amount: "Goal amount",
@@ -60,7 +62,14 @@ function toPayload(engine: EngineName, input: Input) {
     case "standardSip":
       return { monthly_investment: n("monthlyInvestment"), annual_return: n("annualReturn"), years: n("years") };
     case "stepUpSip":
-      return { monthly_investment: n("monthlyInvestment"), annual_return: n("annualReturn"), years: n("years"), annual_increase: n("annualIncrease") };
+      return {
+        monthly_investment: n("monthlyInvestment"),
+        annual_return: n("annualReturn"),
+        years: n("years"),
+        annual_increase: n("annualIncrease"),
+        step_up_type: String(input.stepUpType ?? "percentage"),
+        annual_step_up_amount: n("annualStepUpAmount")
+      };
     case "lumpsum":
       return { principal: n("principal"), annual_return: n("annualReturn"), years: n("years") };
     case "goalSip":
@@ -84,10 +93,22 @@ function fromApiResult(apiResult: ApiResult): CalculatorResult {
 
   return {
     summary,
-    schedule: apiResult.schedule,
+    schedule: apiResult.schedule.map((row) => normalizeScheduleRow(apiResult.calculator, row)),
     chart: apiResult.chart,
     futureValue: pickFutureValue(summary),
     rate: pickRate(summary)
+  };
+}
+
+function normalizeScheduleRow(calculator: string, row: Record<string, number | string>) {
+  if (calculator !== "step-up-sip") return row;
+  return {
+    Year: row.period,
+    "Monthly SIP": row.monthly_sip ?? row["Monthly SIP"],
+    "Annual investment": row.annual_investment ?? row["Annual investment"],
+    "Cumulative invested": row.cumulative_invested ?? row.invested ?? row["Cumulative invested"],
+    "Portfolio value": row.value,
+    Gain: row.gain
   };
 }
 

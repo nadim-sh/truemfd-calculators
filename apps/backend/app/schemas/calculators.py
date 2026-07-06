@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 
@@ -9,6 +11,8 @@ class SipRequest(BaseModel):
 
 class StepUpSipRequest(SipRequest):
     annual_increase: float = Field(ge=0, le=100)
+    step_up_type: Literal["percentage", "fixed_amount"] = "percentage"
+    annual_step_up_amount: float = Field(default=0, ge=0)
 
 
 class LumpsumRequest(BaseModel):
