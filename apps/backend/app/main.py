@@ -24,4 +24,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.get("/")
+def root_health() -> dict[str, str]:
+    return {"status": "healthy", "service": "calculators@TrueMFD"}
+
+
 app.include_router(v1_router, prefix="/api/v1")
