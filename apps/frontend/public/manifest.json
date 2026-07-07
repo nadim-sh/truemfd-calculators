@@ -1,0 +1,42 @@
+{
+  "name": "calculators@TrueMFD",
+  "short_name": "TrueMFD Calc",
+  "description": "Premium mutual fund and wealth planning calculators from TrueMFD.",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#2E221B",
+  "theme_color": "#2E221B",
+  "categories": ["finance", "productivity", "business"],
+  "icons": [
+    { "src": "/assets/icon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/assets/icon-72.png", "sizes": "72x72", "type": "image/png" },
+    { "src": "/assets/icon-96.png", "sizes": "96x96", "type": "image/png" },
+    { "src": "/assets/icon-128.png", "sizes": "128x128", "type": "image/png" },
+    { "src": "/assets/icon-144.png", "sizes": "144x144", "type": "image/png" },
+    { "src": "/assets/icon-152.png", "sizes": "152x152", "type": "image/png" },
+    { "src": "/assets/icon-180.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/assets/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/assets/icon-384.png", "sizes": "384x384", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/assets/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Open calculators",
+      "short_name": "Calculators",
+      "url": "/#calculators",
+      "icons": [{ "src": "/assets/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/true-mfd-og.svg",
+      "sizes": "1200x630",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ]
+}

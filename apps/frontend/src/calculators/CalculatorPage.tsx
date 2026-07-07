@@ -12,6 +12,7 @@ import { BrandFooter } from "../core/BrandFooter";
 import { MobileNav } from "../core/MobileNav";
 import { BrandHeader } from "../core/BrandHeader";
 import { applySeo } from "../core/Seo";
+import { InstallPrompt } from "../core/InstallPrompt";
 
 type FormValues = Record<string, number | string>;
 
@@ -137,6 +138,30 @@ export function CalculatorPage({ calculator }: { calculator: CalculatorDefinitio
       </section>
 
       <section className="workspace">
+        <aside className="panel calculator-brief" aria-label={`${calculator.name} details`}>
+          <div>
+            <p className="eyebrow">{calculator.category} calculator</p>
+            <h2>{calculator.name}</h2>
+            <p>{calculator.summary}</p>
+          </div>
+          <div className="brief-card">
+            <h3>Who should use it</h3>
+            <p>{whoShouldUse(calculator)}</p>
+          </div>
+          <div className="brief-card">
+            <h3>Key benefits</h3>
+            <ul>{benefitsFor(calculator).map((item) => <li key={item}>{item}</li>)}</ul>
+          </div>
+          <div className="brief-card">
+            <h3>Formula used</h3>
+            <p>{formulaFor(calculator)}</p>
+          </div>
+          <div className="brief-card">
+            <h3>Assumptions</h3>
+            <ul>{assumptionsFor(calculator).map((item) => <li key={item}>{item}</li>)}</ul>
+          </div>
+        </aside>
+
         <form className="panel form-panel">
           {calculator.fields.map((field) => field === "cashflows" ? (
             <label key={field}>
@@ -252,6 +277,7 @@ export function CalculatorPage({ calculator }: { calculator: CalculatorDefinitio
         ))}
       </section>
       <BrandFooter />
+      <InstallPrompt />
       <MobileNav />
     </main>
   );
@@ -344,4 +370,50 @@ function stepUpRules(type: "percentage" | "fixed_amount") {
     max: { value: type === "fixed_amount" ? 100000 : 30, message: type === "fixed_amount" ? "Enter Rs 1,00,000 or less." : "Enter 30 or less." },
     validate: (value: string | number) => Number.isFinite(Number(value)) || "Enter a valid number."
   };
+}
+
+function assumptionsFor(calculator: CalculatorDefinition) {
+  const common = calculator.fields
+    .filter((field) => field !== "cashflows")
+    .map((field) => fieldLabels[field] ?? field);
+  if (calculator.engine === "stepUpSip") return [...common, "Step-up mode can be percentage or fixed yearly rupee increase"];
+  if (calculator.engine === "irr" || calculator.engine === "xirr") return ["Cashflows must include at least one outflow and one inflow", "Rates are solver-based and depend on the cashflow pattern"];
+  if (calculator.engine === "ppf") return [...common, "PPF illustration assumes yearly compounding and current input rate"];
+  return common;
+}
+
+function whoShouldUse(calculator: CalculatorDefinition) {
+  const map: Record<string, string> = {
+    "standard-sip": "Investors planning a disciplined monthly investment.",
+    "step-up-sip": "Investors who expect income growth and want to raise SIPs yearly.",
+    lumpsum: "Investors deploying a one-time amount for long-term growth.",
+    "goal-sip": "Families planning for a target such as education, home, or retirement.",
+    swp: "Investors planning regular withdrawals from an existing corpus.",
+    ppf: "Investors evaluating long-term tax-efficient fixed-income accumulation.",
+    "sip-vs-lumpsum": "Investors comparing monthly investing with a one-time allocation.",
+    xirr: "Investors measuring irregular cashflow returns.",
+    irr: "Investors measuring periodic cashflow returns."
+  };
+  return map[calculator.slug] ?? "Investors comparing planning scenarios.";
+}
+
+function benefitsFor(calculator: CalculatorDefinition) {
+  if (calculator.engine === "stepUpSip") return ["Compare percentage and fixed rupee step-ups", "See final monthly SIP", "Review year-wise schedule"];
+  if (calculator.engine === "irr" || calculator.engine === "xirr") return ["Validate cashflow signs", "Estimate return rate", "Copy or export results"];
+  return ["Live result updates", "Chart and schedule output", "Copy, PDF, and CSV export"];
+}
+
+function formulaFor(calculator: CalculatorDefinition) {
+  const map: Record<string, string> = {
+    standardSip: "Monthly SIP future value using monthly compounding.",
+    stepUpSip: "Year-wise SIP contribution compounded monthly, using selected step-up mode.",
+    lumpsum: "Future value = principal x (1 + annual return) ^ years.",
+    goalSip: "Required SIP derived from target future value and monthly compounding.",
+    swp: "Corpus grows monthly, then planned withdrawal is deducted.",
+    ppf: "Yearly contribution compounded annually at the entered rate.",
+    sipVsLumpsum: "Compares SIP future value against lumpsum future value.",
+    xirr: "Annualized solver-based return for irregular cashflows.",
+    irr: "Periodic solver-based return for cashflow series."
+  };
+  return map[calculator.engine];
 }

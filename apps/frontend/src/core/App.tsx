@@ -7,6 +7,7 @@ import { BrandFooter } from "./BrandFooter";
 import { MobileNav } from "./MobileNav";
 import { BrandHeader } from "./BrandHeader";
 import { applySeo } from "./Seo";
+import { InstallPrompt } from "./InstallPrompt";
 
 export function App() {
   useEffect(() => {
@@ -21,15 +22,72 @@ export function App() {
     <main>
       <section className="landing-top">
         <BrandHeader />
-        <p className="calculator-tagline">Premium Financial Calculators for Thoughtful Investors</p>
-
-        <section className="section calculators-section" id="calculators">
-          <div className="section-heading">
-            <p className="eyebrow centered">OUR CALCULATORS</p>
-            <h2>Choose a Planning Tool</h2>
-            <span>Nine precision tools for every investment decision.</span>
+        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} className="landing-hero">
+          <div className="hero-copy">
+            <div className="hero-brand-card" aria-label="TrueMFD identity">
+              <img src="/assets/truemfd-logo.png" alt="TrueMFD logo" />
+              <div>
+                <strong>TrueMFD</strong>
+                <span>AMFI REGISTERED MUTUAL FUND DISTRIBUTOR</span>
+              </div>
+            </div>
+            <div className="hero-founder-line" aria-label="Founder and registration details">
+              <span>NADIM SARFRAZ HUSAIN</span>
+              <span>ARN-2213</span>
+              <span>EUIN-E073190</span>
+            </div>
+            <p className="eyebrow ornamental">PREMIUM FINANCIAL CALCULATORS</p>
+            <h1>Plan Smarter. Invest Better. Grow Confidently.</h1>
+            <p className="lede">Powerful financial calculators designed to help investors make informed investment decisions with confidence.</p>
+            <div className="trust-badges" aria-label="Calculator strengths">
+              {["Accurate", "Reliable", "Insightful", "Investor-First"].map((item) => <span key={item}><BadgeCheck aria-hidden /> {item}</span>)}
+            </div>
+            <div className="hero-actions">
+              <a className="button-link" href="#calculators">Explore Calculators</a>
+              <a className="button-link outline" href="#education">Learn More</a>
+            </div>
           </div>
-          <div className="card-grid">
+
+          <div className="hero-insights" aria-label="Premium investment workspace">
+            <div className="wealth-card main">
+              <span>SIP Future Value</span>
+              <strong>Rs 2,45,67,890</strong>
+              <small>Illustrative projection for long-term planning</small>
+            </div>
+            <div className="hero-chart" aria-hidden>
+              {Array.from({ length: 12 }, (_, index) => <i key={index} />)}
+            </div>
+            <div className="wealth-card compact">
+              <span>Estimated Return</span>
+              <strong>13.24%</strong>
+            </div>
+            <div className="wealth-card compact second">
+              <span>Total Investment</span>
+              <strong>Rs 36,00,000</strong>
+            </div>
+          </div>
+        </motion.div>
+        <div className="brand-strip" aria-label="TrueMFD brand details">
+          <img src="/assets/truemfd-logo.png" alt="TrueMFD logo" />
+          <div>
+            <strong>TrueMFD</strong>
+            <span>AMFI Registered Mutual Fund Distributor</span>
+          </div>
+          <p>9822204877 / 9284731200</p>
+          <p>nadim@truemfd.com</p>
+          <p>www.truemfd.com</p>
+          <p>ARN-2213 | EUIN-E073190</p>
+        </div>
+
+        <section className="calculator-dashboard" id="calculators" aria-label="Calculator selection dashboard">
+          <div className="dashboard-heading">
+            <div>
+              <p className="eyebrow">OUR CALCULATORS</p>
+              <h2>Choose a Planning Tool</h2>
+            </div>
+            <span>Nine precision financial calculators for every investment decision.</span>
+          </div>
+          <div className="dashboard-grid">
             {calculators.map((calculator, index) => (
               <Link className="calculator-card" style={{ animationDelay: `${index * 80}ms` }} to={`/calculators/${calculator.slug}`} key={calculator.slug}>
                 <span className="calculator-icon">{iconFor(calculator.slug)}</span>
@@ -43,34 +101,26 @@ export function App() {
         </section>
       </section>
 
-      <section className="hero hero-showcase">
-        <motion.div initial={{ opacity: 0, y: 12, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} className="hero-identity">
-          <img className="hero-logo" src="/assets/truemfd-logo.png" alt="TrueMFD logo" />
-          <strong>TrueMFD</strong>
-          <small>AMFI Registered Mutual Fund Distributor</small>
-          <span className="identity-divider" aria-hidden />
-          <p>Premium Financial Calculators for Thoughtful Investors</p>
-        </motion.div>
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="hero-grid">
-            <div>
-              <p className="eyebrow ornamental">CALCULATORS@TRUEMFD</p>
-              <h1>Premium Financial Calculators</h1>
-              <h2 className="hero-subtitle">for Thoughtful Investors</h2>
-              <p className="lede">Plan SIPs, withdrawals, PPF, goals, and cashflow returns with clear projections, schedules, and export-ready results.</p>
-              <div className="hero-actions">
-                <a className="button-link" href="#calculators">Explore Calculators</a>
-                <a className="button-link outline" href="https://www.truemfd.com/">Visit TrueMFD.com</a>
-              </div>
-            </div>
-            <div className="trust-panel" aria-label="Trust highlights">
-              <ShieldCheck aria-hidden />
-              <h2>Built for advisory confidence</h2>
-              <p>Reusable financial engine, transparent assumptions, responsive UI, and API-first architecture.</p>
-            </div>
-        </motion.div>
+      <section className="benefits-section" aria-label="Benefits">
+        {[
+          ["Fast Decisions", "Live calculations update as assumptions change."],
+          ["Clear Outputs", "Charts, schedules, copy, PDF, and CSV exports stay consistent."],
+          ["Advisory Ready", "Designed for client conversations and goal-based planning."]
+        ].map(([title, text]) => (
+          <article key={title}>
+            <ShieldCheck aria-hidden />
+            <h2>{title}</h2>
+            <p>{text}</p>
+          </article>
+        ))}
       </section>
 
-      <section className="brand-principles" aria-label="TrueMFD principles">
+      <section className="why-section" aria-label="Why TrueMFD">
+        <div className="why-heading">
+          <p className="eyebrow centered">WHY TRUEMFD</p>
+          <h2>Premium guidance with clarity and care.</h2>
+        </div>
+        <div className="brand-principles">
         {[
           { item: "Trust", text: "Honest advice.", icon: ShieldCheck },
           { item: "Focus", text: "Goal based investing.", icon: Target },
@@ -83,6 +133,7 @@ export function App() {
             <span>{text}</span>
           </div>
         ))}
+        </div>
       </section>
 
       <section className="section split" id="education">
@@ -103,6 +154,7 @@ export function App() {
         </div>
       </section>
       <BrandFooter />
+      <InstallPrompt />
       <MobileNav />
     </main>
   );
