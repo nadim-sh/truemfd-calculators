@@ -601,6 +601,15 @@ button, input, textarea { font: inherit; }
   text-shadow: 0 1px 10px rgba(201, 169, 110, 0.22);
 }
 
+.landing-top .brand-header .brand-lockup strong {
+  color: #f6ddb0;
+  text-shadow: 0 1px 14px rgba(246, 221, 176, 0.28);
+}
+
+.landing-top .brand-header .brand-lockup small {
+  color: rgba(255, 250, 243, 0.9);
+}
+
 .brand-lockup small {
   display: block;
   margin-top: 3px;
