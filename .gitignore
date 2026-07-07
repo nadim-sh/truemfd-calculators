@@ -13,4 +13,5 @@ coverage/
 reports/
 *.log
 production-verification-artifacts/
+verification-screenshots/
 .git.broken-*/
