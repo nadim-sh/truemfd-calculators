@@ -594,9 +594,11 @@ button, input, textarea { font: inherit; }
 
 .brand-lockup strong {
   display: block;
+  color: var(--gold-light);
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.35rem;
   line-height: 1;
+  text-shadow: 0 1px 10px rgba(201, 169, 110, 0.22);
 }
 
 .brand-lockup small {
