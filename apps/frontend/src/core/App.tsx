@@ -14,7 +14,7 @@ export function App() {
     applySeo({
       title: "Premium Financial Calculators | calculators@TrueMFD",
       description: "Plan SIPs, withdrawals, PPF, goals, and cashflow returns with premium TrueMFD financial calculators.",
-      canonical: "https://truemfd-calculators-web.onrender.com/"
+      canonical: "https://calculators.truemfd.com/"
     });
   }, []);
 

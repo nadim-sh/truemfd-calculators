@@ -9,7 +9,7 @@ export function applySeo({ title, description, canonical }: SeoOptions) {
   setMeta("description", description);
   setMeta("og:title", title, "property");
   setMeta("og:description", description, "property");
-  setMeta("og:image", "https://truemfd-calculators-web.onrender.com/true-mfd-og.svg", "property");
+  setMeta("og:image", "https://calculators.truemfd.com/true-mfd-og.svg", "property");
   setLink("canonical", canonical);
   setJsonLd({
     "@context": "https://schema.org",

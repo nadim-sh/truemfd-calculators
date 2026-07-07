@@ -70,7 +70,7 @@ export function CalculatorPage({ calculator }: { calculator: CalculatorDefinitio
     applySeo({
       title: `${calculator.name} | calculators@TrueMFD`,
       description: calculator.summary,
-      canonical: `https://truemfd-calculators-web.onrender.com/calculators/${calculator.slug}`
+      canonical: `https://calculators.truemfd.com/calculators/${calculator.slug}`
     });
   }, [calculator.name, calculator.slug, calculator.summary]);
 
